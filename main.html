@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="components.js"></script>
 </head>
 <body>
     <div id="holder" style="display: none;"></div>
-
 
     <template id="job_template">
         <div class="person">
@@ -22,126 +20,105 @@
                 Developer
             </div>
             
-            <div class="salary" v="textContent-salery">
+            <div class="salary" v="textContent-salary">
                 $100,000
             </div>
             <ol>
-                <li>loaundry</li>
+                <li>laundry</li>
                 <li>flowers</li>
                 <li>cookies</li>
             </ol>
-            <button onclick="this.parent.style.color = 'red'">click me</button>
+            <button onclick="this.parentNode.style.color = 'red'">click me</button>
         </div>
     </template>
 
     <template id="person_template">
         <div class="person">
             <div v="textContent-name" subscription="none"></div>
-            <div v="textContent-age"  subscription="none"></div>
+            <div v="textContent-age" subscription="none"></div>
             <button class="x" onclick="this.parentNode.remove()">remove</button>
         </div>
     </template>
 
-
-    <template id="list-template">
-
-    </template>
-
     <main id="main"></main>
 
-
-    
-</body>
-
-
-<script> 
-
-    function create_from_template(template, props){
-        const template_copy = document.importNode(template.content, true)
-        const allvs = template_copy.querySelectorAll("[v]")
+<script>
+    function create_from_template(template, props) {
+        const template_copy = document.importNode(template.content, true);
+        const allvs = template_copy.querySelectorAll("[v]");
         allvs.forEach(vItem => {
-            const [where, what] = vItem.getAttribute("v").split("-")
-            vItem[where] = props[what]
-        })
+            const [where, what] = vItem.getAttribute("v").split("-");
+            vItem[where] = props[what];
+        });
 
-        // if ('key' in props){
-        //     // template_copy.setAttribute("subscription", props['key'])
-        //     template_copy["subscription"] = props['key']
-        //     subscriptions[props['key']] = props
-        // }
-        holder.appendChild(template_copy)
-        template_copy.setAttribute("subscription-key", "test")
-
-
-        return template_copy
-    }
-
-    function rerender(element, props){
-        const allvs = element.querySelectorAll("[v]")
-        allvs.forEach(vItem => {
-            const [where, what] = vItem.getAttribute("v").split("-")
-            vItem[where] = props[what]
-        })
-    }
-
-    function rerender_from_subscription(element){
-        const props = subscriptions[element["subscription"]]
-        const allvs = element.querySelectorAll("[v]")
-        allvs.forEach(vItem => {
-            if (element in subscriptions){
-                const [where, what] = subscriptions[element].split("-")
-                vItem[where] = props[what]
-            }
-        })
-    }
-
-    function change_values(element, props){
-        const allvs = element.querySelectorAll("[v]")
-        allvs.forEach(vItem => {
-            const [where, what] = vItem.getAttribute("v").split("-")
-            if (what in props){
-                vItem[where] = props[what]
-            }
-        })
-    }
-
-    function subscribe(element, data){
-        console.log("subscribing", data, "to", element)
-            subscriptions[data] = element;
+        if ('key' in props) {
+            template_copy.firstElementChild.setAttribute("subscription-key", props['key']);
+            subscriptions[props['key']] = props;
         }
+        // holder.appendChild(template_copy);
 
-    const subscriptions = {}
+        return template_copy;
+    }
 
+    function rerender(element, props) {
+        const allvs = element.querySelectorAll("[v]");
+        allvs.forEach(vItem => {
+            const [where, what] = vItem.getAttribute("v").split("-");
+            vItem[where] = props[what];
+        });
+    }
 
+    function rerender_from_subscription(element) {
+        const props = subscriptions[element.getAttribute('subscription-key')];
+        if (props) {
+            rerender(element, props)
+        }
+    }
 
+    function change_values(element, props) {
+        const allvs = element.querySelectorAll("[v]");
+        allvs.forEach(vItem => {
+            const [where, what] = vItem.getAttribute("v").split("-");
+            if (what in props) {
+                vItem[where] = props[what];
+            }
+        });
+    }
 
+    //the theme is where a bunch of elements can subscribe the a piece of data so that when that data updates so do all the elements attatched too
+
+    function update_data_and_subscribers(subscription_key, key, new_data){
+        const data = subscriptions[subscription_key];
+        const subscribed_elements = document.querySelectorAll(`[subscription-key=${subscription_key}]`);
+        data[key] = new_data;
+        const props = {[key]: new_data}
+        console.log({data})
+        console.log({subscribed_elements})
+        console.log({data})
+        //still in the works as 'props' refelects the name that the change_values function will use to represent it
+        subscribed_elements.forEach(element => {
+            change_values(element, props);
+        })
+    }
+    
+    const subscriptions = {};
 
     const people = [
         {name: 'John', age: 42, key: "kerry"},
         {name: 'jp', age: 13, key: "jon"},
         {name: 'brad', age: 32, key: "dufe"},
         {name: 'gt', age: 56, key: "lego"},
-    ]
+    ];
+
+    const holder = document.getElementById('holder');
+    const main = document.getElementById('main');
+    const person_template = document.getElementById('person_template');
 
     people.forEach(person => {
-        const pi = create_from_template(person_template, person)
+        const pi = create_from_template(person_template, person);
         main.appendChild(pi);
-        subscribe(pi, person)
-        // pi.setAttribute('name', 'poop');
-        // subscribe(pi, person)
-    })
-    // subscriptions[document.getElementById("main").children[3]] = {name: 'spider man', age: '4'}
-
-    // rerender_from_subscription(document.getElementById("main").children[3])
-    // change_values(document.getElementById("main").children[0], {name: 1322890})
+        // subscribe(pi, person);
+    });
 </script>
-
-
-
-    
-
-
-
-
-
+</body>
 </html>
