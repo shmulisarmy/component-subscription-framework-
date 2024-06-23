@@ -88,8 +88,21 @@
 
     //the theme is where a bunch of elements can subscribe the a piece of data so that when that data updates so do all the elements attatched too
 
-    function update_data_and_subscribers(subscription_key, key, new_data){
+    function update_data_and_subscribers_with_key(subscription_key, key, new_data){
         const data = subscriptions[subscription_key];
+        console.log(data)
+        const subscribed_elements = document.querySelectorAll(`[subscription-key=${subscription_key}]`);
+        data[key] = new_data;
+        const props = {[key]: new_data}
+        console.log({props})
+        //still in the works as 'props' refelects the name that the change_values function will use to represent it
+        subscribed_elements.forEach(element => {
+            change_values(element, props);
+        })
+    }
+
+    function update_data_and_subscribers(data, key, new_data){
+        const subscription_key = data['subscription-key'];
         console.log(data)
         const subscribed_elements = document.querySelectorAll(`[subscription-key=${subscription_key}]`);
         data[key] = new_data;
