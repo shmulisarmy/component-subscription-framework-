@@ -79,10 +79,13 @@
         console.log("top of subscribe_component_to_data", {template}, {props})
         const template_copy = document.importNode(template.content, true);
         const allvs = template_copy.querySelectorAll("[v]");
+        const key = props["subscription-key"]
         allvs.forEach(vItem => {
             const [where, what] = vItem.getAttribute("v").split("-");
             vItem[where] = props[what];
-        });
+            vItem.setAttribute(`${key}-${what}`, where)
+            });
+        template_copy.firstElementChild.setAttribute(`${key}`, 'where');
 
         if ('subscription-key' in props) {
             template_copy.firstElementChild.setAttribute("subscription-key", props['subscription-key']);
@@ -138,27 +141,27 @@
 
     function update_data_and_subscribers_with_key(subscription_key, key, new_data){
         const data = subscriptions[subscription_key];
-        console.log({data})
-        const subscribed_elements = document.querySelectorAll(`[subscription-key=${subscription_key}]`);
+        console.log(data)
+        const subscribed_elements = document.querySelectorAll(`[${subscription_key}-${key}]`);
         data[key] = new_data;
         const props = {[key]: new_data}
         console.log({props})
         //still in the works as 'props' refelects the name that the change_values function will use to represent it
         subscribed_elements.forEach(element => {
-            change_values(element, props);
+            element[element.getAttribute(`${subscription_key}-${key}`)] = new_data
         })
     }
 
     function update_data_and_subscribers(data, key, new_data){
         const subscription_key = data['subscription-key'];
         console.log(data)
-        const subscribed_elements = document.querySelectorAll(`[subscription-key=${subscription_key}]`);
+        const subscribed_elements = document.querySelectorAll(`[${subscription_key}-${key}]`);
         data[key] = new_data;
         const props = {[key]: new_data}
         console.log({props})
         //still in the works as 'props' refelects the name that the change_values function will use to represent it
         subscribed_elements.forEach(element => {
-            change_values(element, props);
+            element[element.getAttribute(`${subscription_key}-${key}`)] = new_data
         })
     }
     
@@ -176,8 +179,7 @@
 
     //high level abstraction
     function get_family_subscribtion(element_householde_leader, data_householde_leader, template){
-        console.log(main)
-        console.log(people)
+
         
         data_householde_leader.forEach(data => {
             const pi = subscribe_component_to_data(template, data);
