@@ -4,6 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .person{
+            border: 1px solid black;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 10px;
+            box-shadow: 1px 1px 1px;
+            position: relative;
+            button{
+                margin: 4px;
+            }
+            .x{
+                background-color: red;
+                position: absolute;
+                top: 0%;
+                right: 0%;
+                border-radius: 4px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div id="holder" style="display: none;"></div>
@@ -36,7 +56,9 @@
         <div class="person">
             <div v="textContent-name" subscription="none"></div>
             <div v="textContent-age" subscription="none"></div>
-            <button class="x" onclick="this.parentNode.remove()">remove</button>
+            <button style="background: linear-gradient(90deg, lightgreen, green);" 
+                onclick="this.parentNode.remove()">remove</button>
+            <button class="x">X</button>
         </div>
     </template>
 
