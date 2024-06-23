@@ -59,13 +59,21 @@
     </template>
 
 
+    <template id="google_template">
+        <ol btl="listItem_template-list">
+
+        </ol>
+    </template>
+
+
     <template id="person_template">
         <div class="person">
-            <div v="textContent-name" ></div>
-            <div v="textContent-age" ></div>
-            <ol btl="listItem_template-list">
+            <div v="textContent-name"></div>
+            <div v="textContent-age"></div>
+            <div btl="google_template-google">
 
-            </ol>
+            </div>
+            
             <button style="background: linear-gradient(90deg, lightgreen, green);" 
                 onclick="this.parentNode.remove()">remove</button>
             <button class="x">X</button>
@@ -92,20 +100,23 @@
         template_copy.firstElementChild.setAttribute(`${key}`, 'where');
 
         if ('subscription-key' in props) {
-            template_copy.firstElementChild.setAttribute("subscription-key", props['subscription-key']);
             subscriptions[props['subscription-key']] = props;
-        }
+            }
+        // template_copy.firstElementChild.setAttribute("subscription-key", props['subscription-key']);
         const allbtls = template_copy.querySelectorAll("[btl]");
         
         allbtls.forEach(btl => {
             const [where, what] = btl.getAttribute("btl").split("-")
             const baby_template = document.getElementById(where)
             console.log({baby_template})
-            props[what].forEach(props => {
-                console.log({props})
-                btl.appendChild(subscribe_component_to_data(baby_template, props))
+            if (what in props){
 
+                props[what].forEach(props => {
+                    console.log({props})
+                btl.appendChild(subscribe_component_to_data(baby_template, props))
+            
             })
+        }
         });
 
 
@@ -173,8 +184,8 @@
     let subscription_keys_used = 0
 
     const people = [
-        {name: 'John', age: 42,  list: [{listItem: "laundry"}, , {listItem: "perk"}]},
-        {name: 'jp', age: 13,  list: [{listItem: "laundry"}, {listItem: "perk"}]},
+        {name: 'John', age: 42,  google: [{list: [{listItem: "laundry"}, {listItem: "perk"}]}, {list: [{listItem: "laundry"}, , {listItem: "perk"}]}]},
+        {name: 'jp', age: 13,  google: [{listItem: "laundry"}, {listItem: "perk"}]},
         {name: 'brad', age: 32,  list: [{listItem: "laundry"}, {listItem: "perk"}]},
         {name: 'gt', age: 56,  list: [{listItem: "laundry"}, {listItem: "perk"}]},
     ];
