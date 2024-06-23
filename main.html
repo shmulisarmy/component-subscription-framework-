@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="components.js"></script>
+</head>
+<body>
+    <div id="holder" style="display: none;"></div>
+
+
+    <template id="job_template">
+        <div class="person">
+            <div class="name">
+                <h1 v="textContent-name">John Doe</h1>
+            </div>
+            <div class="age" v="textContent-age">
+                30
+            </div>
+            <div class="job">
+                Developer
+            </div>
+            
+            <div class="salary" v="textContent-salery">
+                $100,000
+            </div>
+            <ol>
+                <li>loaundry</li>
+                <li>flowers</li>
+                <li>cookies</li>
+            </ol>
+            <button onclick="this.parent.style.color = 'red'">click me</button>
+        </div>
+    </template>
+
+    <template id="person_template">
+        <div class="person">
+            <div v="textContent-name" subscription="none"></div>
+            <div v="textContent-age"  subscription="none"></div>
+            <button class="x" onclick="this.parentNode.remove()">remove</button>
+        </div>
+    </template>
+
+
+    <template id="list-template">
+
+    </template>
+
+    <main id="main"></main>
+
+
+    
+</body>
+
+
+<script> 
+
+    function create_from_template(template, props){
+        const template_copy = document.importNode(template.content, true)
+        const allvs = template_copy.querySelectorAll("[v]")
+        allvs.forEach(vItem => {
+            const [where, what] = vItem.getAttribute("v").split("-")
+            vItem[where] = props[what]
+        })
+
+        // if ('key' in props){
+        //     // template_copy.setAttribute("subscription", props['key'])
+        //     template_copy["subscription"] = props['key']
+        //     subscriptions[props['key']] = props
+        // }
+        holder.appendChild(template_copy)
+        template_copy.setAttribute("subscription-key", "test")
+
+
+        return template_copy
+    }
+
+    function rerender(element, props){
+        const allvs = element.querySelectorAll("[v]")
+        allvs.forEach(vItem => {
+            const [where, what] = vItem.getAttribute("v").split("-")
+            vItem[where] = props[what]
+        })
+    }
+
+    function rerender_from_subscription(element){
+        const props = subscriptions[element["subscription"]]
+        const allvs = element.querySelectorAll("[v]")
+        allvs.forEach(vItem => {
+            if (element in subscriptions){
+                const [where, what] = subscriptions[element].split("-")
+                vItem[where] = props[what]
+            }
+        })
+    }
+
+    function change_values(element, props){
+        const allvs = element.querySelectorAll("[v]")
+        allvs.forEach(vItem => {
+            const [where, what] = vItem.getAttribute("v").split("-")
+            if (what in props){
+                vItem[where] = props[what]
+            }
+        })
+    }
+
+    function subscribe(element, data){
+        console.log("subscribing", data, "to", element)
+            subscriptions[data] = element;
+        }
+
+    const subscriptions = {}
+
+
+
+
+
+    const people = [
+        {name: 'John', age: 42, key: "kerry"},
+        {name: 'jp', age: 13, key: "jon"},
+        {name: 'brad', age: 32, key: "dufe"},
+        {name: 'gt', age: 56, key: "lego"},
+    ]
+
+    people.forEach(person => {
+        const pi = create_from_template(person_template, person)
+        main.appendChild(pi);
+        subscribe(pi, person)
+        // pi.setAttribute('name', 'poop');
+        // subscribe(pi, person)
+    })
+    // subscriptions[document.getElementById("main").children[3]] = {name: 'spider man', age: '4'}
+
+    // rerender_from_subscription(document.getElementById("main").children[3])
+    // change_values(document.getElementById("main").children[0], {name: 1322890})
+</script>
+
+
+
+    
+
+
+
+
+
+</html>
