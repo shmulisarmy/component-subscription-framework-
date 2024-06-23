@@ -79,6 +79,10 @@
         console.log("top of subscribe_component_to_data", {template}, {props})
         const template_copy = document.importNode(template.content, true);
         const allvs = template_copy.querySelectorAll("[v]");
+        if (!("subscription-key" in props)) {
+            props["subscription-key"] = `sk${subscription_keys_used}`
+            subscription_keys_used++
+        }
         const key = props["subscription-key"]
         allvs.forEach(vItem => {
             const [where, what] = vItem.getAttribute("v").split("-");
@@ -166,12 +170,13 @@
     }
     
     const subscriptions = {};
+    let subscription_keys_used = 0
 
     const people = [
-        {name: 'John', age: 42, "subscription-key": "kerry", list: [{listItem: "laundry", "subscription-key": 'poop'}, {listItem: "perk"}]},
-        {name: 'jp', age: 13, "subscription-key": "jon", list: [{listItem: "laundry"}, {listItem: "perk"}]},
-        {name: 'brad', age: 32, "subscription-key": "dufe", list: [{listItem: "laundry"}, {listItem: "perk"}]},
-        {name: 'gt', age: 56, "subscription-key": "lego", list: [{listItem: "laundry"}, {listItem: "perk"}]},
+        {name: 'John', age: 42,  list: [{listItem: "laundry"}, , {listItem: "perk"}]},
+        {name: 'jp', age: 13,  list: [{listItem: "laundry"}, {listItem: "perk"}]},
+        {name: 'brad', age: 32,  list: [{listItem: "laundry"}, {listItem: "perk"}]},
+        {name: 'gt', age: 56,  list: [{listItem: "laundry"}, {listItem: "perk"}]},
     ];
 
 
