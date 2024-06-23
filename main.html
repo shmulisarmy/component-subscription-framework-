@@ -51,8 +51,8 @@
             vItem[where] = props[what];
         });
 
-        if ('key' in props) {
-            template_copy.firstElementChild.setAttribute("subscription-key", props['key']);
+        if ('subscription-key' in props) {
+            template_copy.firstElementChild.setAttribute("subscription-key", props['subscription-key']);
             subscriptions[props['subscription-key']] = props;
         }
         // holder.appendChild(template_copy);
@@ -76,6 +76,7 @@
     }
 
     function change_values(element, props) {
+        console.log('in change_values', {props})
         const allvs = element.querySelectorAll("[v]");
         allvs.forEach(vItem => {
             const [where, what] = vItem.getAttribute("v").split("-");
@@ -89,9 +90,11 @@
 
     function update_data_and_subscribers(subscription_key, key, new_data){
         const data = subscriptions[subscription_key];
+        console.log(data)
         const subscribed_elements = document.querySelectorAll(`[subscription-key=${subscription_key}]`);
         data[key] = new_data;
         const props = {[key]: new_data}
+        console.log({props})
         //still in the works as 'props' refelects the name that the change_values function will use to represent it
         subscribed_elements.forEach(element => {
             change_values(element, props);
