@@ -98,13 +98,61 @@ function update_data_and_subscribers(data, key, new_data){
 const subscriptions = {};
 let subscription_keys_used = 0
 
-const people = [
+var people = [
     {name: 'John', age: 42,  google: [{list: [{listItem: "laundry"}, {listItem: "perk"}]}, {list: [{listItem: "laundry"}, , {listItem: "perk"}]}]},
     {name: 'jp', age: 13,  google: [{listItem: "laundry"}, {listItem: "perk"}]},
     {name: 'brad', age: 32,  list: [{listItem: "laundry"}, {listItem: "perk"}]},
     {name: 'gt', age: 56,  list: [{listItem: "laundry"}, {listItem: "perk"}]},
 ];
 
+
+function html(strings, ...args){
+    const all = []
+    strings.forEach((string ,index) => {
+        all.push(string)
+        all.push(args[index])
+    })
+
+    return all.join("")
+}
+
+
+function isObject(value) {
+    return Object.prototype.toString.call(value) === '[object Object]';
+  }
+
+  function generate_template_from_list(data_name, data){
+    console.log(html`<template id='${data_name}_template'>
+        <div blt='${data_name}'>
+            ${
+                generate_template(data_name, data[0])
+            }
+        </div>
+    </template>`)
+    
+}
+
+
+function generate_template(data_name, data){
+    const all_templates = []
+
+    all_templates.push(html`<template id="${data_name}_template">
+        ${Object.keys(data).map(key => {
+        if (isObject(data[key])){
+             generate_template(key, data[key])
+            return ""
+        } else if(Array.isArray(data[key])){
+            return generate_template_from_list(key, data[key])
+        }
+        else 
+            return html`<div v='textContent-${key}'></div>${'\n'}`
+    })}
+     </template>`)
+    
+    console.log( all_templates.join(""))
+    
+
+}
 
 
 
