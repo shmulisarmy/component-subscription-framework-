@@ -26,185 +26,51 @@
     </style>
 </head>
 <body>
-    <div id="holder" style="display: none;"></div>
-
-    <template id="job_template">
-        <div class="person">
-            <div class="name">
-                <h1 v="textContent-name">John Doe</h1>
-            </div>
-            <div class="age" v="textContent-age">
-                30
-            </div>
-            <div class="job">
-                Developer
-            </div>
-            
-            <div class="salary" v="textContent-salary">
-                $100,000
-            </div>
-            <ol>
-                <li>laundry</li>
-                <li>flowers</li>
-                <li>cookies</li>
-            </ol>
-            <button onclick="this.parentNode.style.color = 'red'">click me</button>
-        </div>
-    </template>
+    <div style="display: none;" id="template-store">
 
 
-    <template id="listItem_template">
+
         
-        <li v="textContent-listItem"></li>
-    </template>
 
 
-    <template id="google_template">
-        <ol btl="listItem_template-list">
 
-        </ol>
-    </template>
+<template id="listItem_template">
+    
+    <li v="textContent-listItem"></li>
+</template>
+
+
+<template id="google_template">
+    <ol btl="listItem_template-list">
+        
+    </ol>
+</template>
 
 
     <template id="person_template">
         <div class="person">
             <div v="textContent-name"></div>
-            <div v="textContent-age"></div>
-            <div btl="google_template-google">
-
-            </div>
-            
-            <button style="background: linear-gradient(90deg, lightgreen, green);" 
-                onclick="this.parentNode.remove()">remove</button>
-            <button class="x">X</button>
-        </div>
-    </template>
-
-    <main id="main"></main>
-
-<script>
-    function subscribe_component_to_data(template, props) {
-        console.log("top of subscribe_component_to_data", {template}, {props})
-        const template_copy = document.importNode(template.content, true);
-        const allvs = template_copy.querySelectorAll("[v]");
-        if (!("subscription-key" in props)) {
-            props["subscription-key"] = `sk${subscription_keys_used}`
-            subscription_keys_used++
-        }
-        const key = props["subscription-key"]
-        allvs.forEach(vItem => {
-            const [where, what] = vItem.getAttribute("v").split("-");
-            vItem[where] = props[what];
-            vItem.setAttribute(`${key}-${what}`, where)
-            });
-        template_copy.firstElementChild.setAttribute(`${key}`, 'where');
-
-        if ('subscription-key' in props) {
-            subscriptions[props['subscription-key']] = props;
-            }
-        // template_copy.firstElementChild.setAttribute("subscription-key", props['subscription-key']);
-        const allbtls = template_copy.querySelectorAll("[btl]");
+        <div v="textContent-age"></div>
+    <div btl="google_template-google">
         
-        allbtls.forEach(btl => {
-            const [where, what] = btl.getAttribute("btl").split("-")
-            const baby_template = document.getElementById(where)
-            console.log({baby_template})
-            if (what in props){
+    </div>
 
-                props[what].forEach(props => {
-                    console.log({props})
-                btl.appendChild(subscribe_component_to_data(baby_template, props))
-            
-            })
-        }
-        });
+<button style="background: linear-gradient(90deg, lightgreen, green);" 
+onclick="this.parentNode.remove()">remove</button>
+<button class="x">X</button>
+</div>
+</template>
 
 
-        return template_copy;
-    }
+</div>
 
-    function rerender(element, props) {
-        const allvs = element.querySelectorAll("[v]");
-        allvs.forEach(vItem => {
-            const [where, what] = vItem.getAttribute("v").split("-");
-            vItem[where] = props[what];
-        });
-    }
 
-    function rerender_from_subscription(element) {
-        const props = subscriptions[element.getAttribute('subscription-key')];
-        if (props) {
-            rerender(element, props)
-        }
-    }
+<main id="main"></main>
 
-    function change_values(element, props) {
-        console.log('in change_values', {props})
-        console.log(element)
-        const allvs = element.querySelectorAll("[v]");
-        console.log({allvs})
-        allvs.forEach(vItem => {
-            const [where, what] = vItem.getAttribute("v").split("-");
-            console.log({where}, {what})
-            if (what in props) {
-                vItem[where] = props[what];
-            }
-        });
-    }
+<c-c></c-c>
 
-    //the theme is where a bunch of elements can subscribe the a piece of data so that when that data updates so do all the elements attatched too
-
-    function update_data_and_subscribers_with_key(subscription_key, key, new_data){
-        const data = subscriptions[subscription_key];
-        console.log(data)
-        const subscribed_elements = document.querySelectorAll(`[${subscription_key}-${key}]`);
-        data[key] = new_data;
-        const props = {[key]: new_data}
-        console.log({props})
-        //still in the works as 'props' refelects the name that the change_values function will use to represent it
-        subscribed_elements.forEach(element => {
-            element[element.getAttribute(`${subscription_key}-${key}`)] = new_data
-        })
-    }
-
-    function update_data_and_subscribers(data, key, new_data){
-        const subscription_key = data['subscription-key'];
-        console.log(data)
-        const subscribed_elements = document.querySelectorAll(`[${subscription_key}-${key}]`);
-        data[key] = new_data;
-        const props = {[key]: new_data}
-        console.log({props})
-        //still in the works as 'props' refelects the name that the change_values function will use to represent it
-        subscribed_elements.forEach(element => {
-            element[element.getAttribute(`${subscription_key}-${key}`)] = new_data
-        })
-    }
+<script src="main.js">
     
-    const subscriptions = {};
-    let subscription_keys_used = 0
-
-    const people = [
-        {name: 'John', age: 42,  google: [{list: [{listItem: "laundry"}, {listItem: "perk"}]}, {list: [{listItem: "laundry"}, , {listItem: "perk"}]}]},
-        {name: 'jp', age: 13,  google: [{listItem: "laundry"}, {listItem: "perk"}]},
-        {name: 'brad', age: 32,  list: [{listItem: "laundry"}, {listItem: "perk"}]},
-        {name: 'gt', age: 56,  list: [{listItem: "laundry"}, {listItem: "perk"}]},
-    ];
-
-
-
-
-    //high level abstraction
-    function get_family_subscribtion(element_householde_leader, data_householde_leader, template){
-
-        
-        data_householde_leader.forEach(data => {
-            const pi = subscribe_component_to_data(template, data);
-            element_householde_leader.appendChild(pi);
-});
-
-
-}
-get_family_subscribtion(main, people, person_template)
 </script>
 </body>
 </html>
