@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="static/main.css">
+</head>
+
+<body>
+
+
+    <template id="cart_template">
+        <div style="border: 1px solid black; border-radius: 10px;">
+            <h1 v="foodName-textContent"></h1>
+            <h3 v="price-textContent"></h3>
+            <h3 d="quantity-textContent"></h3>
+            <div class="buttons" style="display: flex;">
+
+                <button onclick="update_data_and_subscribers(get_nearest_data_subscription(this), 'quantity', get_nearest_data_subscription(this).quantity - 1)">-</button>
+                <button onclick="update_data_and_subscribers(get_nearest_data_subscription(this), 'quantity', get_nearest_data_subscription(this).quantity + 1)">+</button>
+            </div>
+        </div>
+    </template>
+    
+    <div id="cart">
+        
+      
+    </div>
+
+
+    <template id="options_template">
+        <div class="menu-item" data-subscription-key="hello">
+
+            <img v="image_url-src" style="width: 100%" alt="">
+            <br>
+            <span v="foodName-textContent"></span>
+            <span v="price-textContent"></span>
+            <br>
+            <button 
+            onclick="update_data_and_subscribers_with_key(nearest_parrent_data_subscription_key(this), 
+            'foodName', get_nearest_data_subscription(this)['price'])">
+                hello
+            </button>
+            <button onclick="add_to_cart(get_nearest_data_subscription(this))">add to cart</button>
+        </div>
+
+    </template>
+
+
+    <template id="catagory_template">
+        <h1 style="width: 100%; text-align: center;" v="category-textContent" computed-sk0-category="pad-textContent"></h1>
+        <div blt="options"></div>
+    </template>
+
+
+
+
+
+
+    <main id="main"></main>
+
+
+    <script src="static/main.js">
+    </script>
+    <script src="static/new.js"></script>
+
+</body>
+
+</html>
