@@ -1,0 +1,28 @@
+.menu-item{
+    border: 1px solid black;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 1px 
+}
+
+
+[blt="options"] {
+    margin: 8%;
+    margin-right: calc(300px + 8%);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-gap: 20px;
+    img{
+        aspect-ratio: 3/2;
+    }
+}
+
+#cart{
+    position: fixed; 
+    top: 0%;
+     right: 0%; 
+     border: 1px solid black;
+      width: 300px; 
+    text-align: center;
+}
