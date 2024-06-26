@@ -40,3 +40,14 @@ const cart = [];
 
 get_family_subscribtion(document.getElementById("cart"), cart, cart_template)
 console.log(menu.length)
+
+
+
+function checkout(){
+    fetch("/checkout", {method: "POST", body: JSON.stringify(cart)})
+    .then(response => response.json())
+    .then(data => {
+        console.log("checkout data:", data)
+        alert(`Your order has been placed! Your total is $${data.total})`)
+    })
+}

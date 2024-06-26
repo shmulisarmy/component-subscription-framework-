@@ -58,22 +58,23 @@ function subscribe_component_to_data(template, props) {
     return template_copy;
 }
 
-function rerender(element, props) {
-    const allvs = element.querySelectorAll("[v]");
+
+
+
+function rerender_nearest_subscribed_element(element) {
+    let current_element = element;
+    while (!current_element.has_atribute("subscription-key")){
+        current_element = current_element.parrendElement;
+    }
+    const props = subscriptions[current_element.attribute("subscription-key")]
+    const allvs = current_element.querySelectorAll("[v]");
     allvs.forEach(vItem => {
         const [where, what] = vItem.getAttribute("v").split("-");
         vItem[where] = props[what];
     });
 }
 
-function rerender_from_subscription(element) {
-    const props = subscriptions[element.getAttribute('subscription-key')];
-    if (props) {
-        rerender(element, props)
-    }
-}
-
-function change_values(element, props) {
+function change_values(element, ...props) {
     console.log('in change_values', {props})
     console.log(element)
     const allvs = element.querySelectorAll("[v]");
@@ -2034,15 +2035,11 @@ generate_template('food catigories', menu)
 
 
 //high level abstraction
-function get_family_subscribtion(element_householde_leader, data_householde_leader, template){
-    console.count("")
-    console.count("")
-    
+function get_family_subscribtion(element_householde_leader, data_householde_leader, template){    
     data_householde_leader.forEach(data => {
         element_householde_leader.appendChild(subscribe_component_to_data(template, data));
-});
-
-
+        }
+    )
 }
 get_family_subscribtion(main, menu, document.getElementById("catagory_template"))
 
