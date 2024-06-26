@@ -1,76 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        .person{
-            border: 1px solid black;
-            padding: 10px;
-            margin: 10px;
-            border-radius: 10px;
-            box-shadow: 1px 1px 1px;
-            position: relative;
-            button{
-                margin: 4px;
-            }
-            .x{
-                background-color: red;
-                position: absolute;
-                top: 0%;
-                right: 0%;
-                border-radius: 4px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="main.css">
 </head>
+
 <body>
-    <div style="display: none;" id="template-store">
 
 
+    <template id="cart_template">
+        <div style="border: 1px solid black; border-radius: 10px;">
+            <h1 v="foodName-textContent"></h1>
+            <h3 v="price-textContent"></h3>
+            <h3 d="quantity-textContent"></h3>
+            <div class="buttons" style="display: flex;">
 
-        
-
-
-
-<template id="listItem_template">
+                <button onclick="update_data_and_subscribers(get_nearest_data_subscription(this), 'quantity', get_nearest_data_subscription(this).quantity - 1)">-</button>
+                <button onclick="update_data_and_subscribers(get_nearest_data_subscription(this), 'quantity', get_nearest_data_subscription(this).quantity + 1)">+</button>
+            </div>
+        </div>
+    </template>
     
-    <li v="textContent-listItem"></li>
-</template>
-
-
-<template id="google_template">
-    <ol btl="listItem_template-list">
+    <div id="cart">
         
-    </ol>
-</template>
-
-
-    <template id="person_template">
-        <div class="person">
-            <div v="textContent-name"></div>
-        <div v="textContent-age"></div>
-    <div btl="google_template-google">
-        
+      
     </div>
 
-<button style="background: linear-gradient(90deg, lightgreen, green);" 
-onclick="this.parentNode.remove()">remove</button>
-<button class="x">X</button>
-</div>
-</template>
+
+    <template id="options_template">
+        <div class="menu-item" data-subscription-key="hello">
+
+            <img v="image_url-src" style="width: 100%" alt="">
+            <br>
+            <span v="foodName-textContent"></span>
+            <span v="price-textContent"></span>
+            <br>
+            <button 
+            onclick="update_data_and_subscribers_with_key(nearest_parrent_data_subscription_key(this), 
+            'foodName', get_nearest_data_subscription(this)['price'])">
+                hello
+            </button>
+            <button onclick="add_to_cart(get_nearest_data_subscription(this))">add to cart</button>
+        </div>
+
+    </template>
 
 
-</div>
+    <template id="catagory_template">
+        <h1 style="width: 100%; text-align: center;" v="category-textContent" computed-sk0-category="pad-textContent"></h1>
+        <div blt="options"></div>
+    </template>
 
 
-<main id="main"></main>
 
-<c-c></c-c>
 
-<script src="main.js">
-    
-</script>
+
+
+    <main id="main"></main>
+
+
+    <script src="main.js">
+    </script>
+    <script src="new.js"></script>
+
 </body>
+
 </html>
