@@ -14,32 +14,32 @@
 
     <template id="cart_template">
 
-        <div class="CartItem">
+        <div class="CartItem" >
 
-            <div class="text-and-image" style='display: "flex"; justify-content: "space-between"; '>
-                <div class="image-and-text" style="display: flex;">
+            <h2 v="foodName-textContent"></h2>
+            <div class="text-and-image">
+                <div class="image-and-text" style="display: flex; position: relative;">
 
                     <div class="text">
-                        
-                        <h1 v="foodName-textContent"></h1>
-                    <p v="price-textContent"></p>
-                <p d="quantity-textContent"></p>
-            </div>
-        
-        
-        <img v="image_url-src" alt=""/>
-        </div>
 
-                    <div class="cannot-edit-message">you cannot edit this while in checkout</div>
-                    <div class="buttons">
-                        <button
-                            onclick="update_data_and_subscribers(get_nearest_data_subscription(this), 'quantity', get_nearest_data_subscription(this).quantity - 1)">-</button>
-                        <button
-                            onclick="update_data_and_subscribers(get_nearest_data_subscription(this), 'quantity', get_nearest_data_subscription(this).quantity + 1)">+</button>
-                        <button
-                           class="x" onclick="delete get_nearest_data_subscription(this); this.parentElement.parentElement.remove();">X</button>
+                        <p v="price-textContent"></p>
+                        <p d="quantity-textContent"></p>
                     </div>
+
+
+                    <img style="aspect-ratio: 1/1!important; position: absolute; top: 0%; right: 0%; " v="image_url-src" alt="" />
                 </div>
+
+                <div class="cannot-edit-message">you cannot edit this while in checkout</div>
+                <div class="buttons">
+                    <button
+                        onclick="update_data_and_subscribers(get_nearest_data_subscription(this), 'quantity', get_nearest_data_subscription(this).quantity - 1)">-</button>
+                    <button
+                        onclick="update_data_and_subscribers(get_nearest_data_subscription(this), 'quantity', get_nearest_data_subscription(this).quantity + 1)">+</button>
+                    <button class="x"
+                        onclick="cart.forEach((item, index) => {if (item.foodName == get_nearest_data_subscription(this)['foodName'])(delete cart[index])}); this.parentElement.parentElement.parentElement.remove();">X</button>
+                </div>
+            </div>
         </div>
         <!-- <img width="70px" height="70px" alt="" style=' padding: "4%";' /> -->
         </div>

@@ -16,11 +16,15 @@ function subscribe_component_to_data(template, props) {
     allds.forEach(dItem => {
         const [what, where] = dItem.getAttribute("d").split("-");
         dItem[where] = `${what}: ${props[what]}`;
-        dItem.setAttribute(`${key}-${what}`, where)
+        dItem.setAttribute(`display-${key}-${what}`, where)
         });
 
-        
-    
+    const allcs = template_copy.querySelectorAll("[c]");
+    allcs.forEach(cItem => {
+        const [computation_function_name, what, where] = cItem.getAttribute("c").split("-");
+        cItem[where] = computations[computation_function_name](what);
+        cItem.setAttribute(`computed-${key}-${what}`, `${computation_function_name}-${where}`)
+        });
 
     Object.keys(props).forEach(prop => {
         template_copy.querySelectorAll(`[computed-${props["subscription-key"]}-${prop}]`).forEach(element => {
