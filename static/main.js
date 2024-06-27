@@ -11,20 +11,20 @@ function subscribe_component_to_data(template, props) {
     allvs.forEach(vItem => {
         const [what, where] = vItem.getAttribute("v").split("-");
         vItem[where] = props[what];
-        vItem.setAttribute(`${key}-${what}`, where)
+        vItem.setAttribute(`${key}-${what}`, `value-${where}`)
         });
     const allds = template_copy.querySelectorAll("[d]");
     allds.forEach(dItem => {
         const [what, where] = dItem.getAttribute("d").split("-");
         dItem[where] = `${what}: ${props[what]}`;
-        dItem.setAttribute(`display-${key}-${what}`, where)
+        dItem.setAttribute(`${key}-${what}`, `display-${where}`)
         });
 
     const allcs = template_copy.querySelectorAll("[c]");
     allcs.forEach(cItem => {
         const [computation_function_name, what, where] = cItem.getAttribute("c").split("-");
         cItem[where] = computations[computation_function_name](what);
-        cItem.setAttribute(`computed-${key}-${what}`, `${computation_function_name}-${where}`)
+        cItem.setAttribute(`${key}-${what}`, `computed@${computation_function_name}-${where}`)
         });
 
     Object.keys(props).forEach(prop => {
@@ -67,11 +67,12 @@ function rerender_nearest_subscribed_element(element) {
         current_element = current_element.parrendElement;
     }
     const props = subscriptions[current_element.attribute("subscription-key")]
-    const allvs = current_element.querySelectorAll("[v]");
-    allvs.forEach(vItem => {
-        const [where, what] = vItem.getAttribute("v").split("-");
-        vItem[where] = props[what];
-    });
+    const subscription_key = props['subscription-key']
+    Object.keys(props).forEach(prop => {
+        const elements = current_element.querySelectorAll(`[${subscription_key}-${prop}]:not([blt])`);
+        // todo: break down atribute and apply to right kind of rendering for it
+
+    })
 }
 
 function change_values(element, ...props) {
