@@ -75,6 +75,30 @@ function rerender_nearest_subscribed_element(element) {
     })
 }
 
+
+function delete_data_and_all_subscribers(subscription_key){
+    delete subscriptions[[subscription_key]]
+    document.querySelectorAll(`[subscription-key=${subscribe_component_to_data}]`).forEach(element => {
+        element.remove()
+    })
+}
+
+function delete_component_and_all_subscriptions(element){
+    const subscription_key = element.attributes["subscription-key"]
+    element.remove()
+    delete subscriptions[[subscription_key]]
+}
+
+function delete_component_and_subscription_if_no_subscribers(element){
+    const subscription_key = element.attributes["subscription-key"]
+    element.remove()
+    if (!document.querySelectory(`[subscription-key=${subscribe_component_to_data}]`)){
+        delete subscriptions[[subscription_key]]
+    }
+}
+
+
+
 function change_values(element, ...props) {
     console.log('in change_values', {props})
     console.log(element)
