@@ -21,7 +21,7 @@ function get_nearest_data_subscription(element) {
 
 
 
-function add_to_cart({ foodName, price }) {
+function add_to_cart({ foodName, price, image_url }) {
     let item_found = false;
     cart.forEach(item => {
         if (item.foodName == foodName) {
@@ -31,7 +31,7 @@ function add_to_cart({ foodName, price }) {
         }
     })
     if (!item_found) {
-        cart.push({ foodName, price, quantity: 1 })
+        cart.push({ foodName, price, image_url, quantity: 1 })
         const new_item_index = cart.length - 1
         document.getElementById("cart").appendChild(subscribe_component_to_data(cart_template, cart[new_item_index]))
     }
