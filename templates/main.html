@@ -17,13 +17,18 @@
         <div class="CartItem">
 
             <div class="text-and-image" style='display: "flex"; justify-content: "space-between"; '>
-                <div class="text">
+                <div class="image-and-text" style="display: flex;">
 
-                    <h1 v="foodName-textContent"></h1>
+                    <div class="text">
+                        
+                        <h1 v="foodName-textContent"></h1>
                     <p v="price-textContent"></p>
-                    <p d="quantity-textContent"></p>
-
-                    <img v="image_url-src" alt=""/>
+                <p d="quantity-textContent"></p>
+            </div>
+        
+        
+        <img v="image_url-src" alt=""/>
+        </div>
 
                     <div class="cannot-edit-message">you cannot edit this while in checkout</div>
                     <div class="buttons">
@@ -35,7 +40,6 @@
                            class="x" onclick="delete get_nearest_data_subscription(this); this.parentElement.parentElement.remove();">X</button>
                     </div>
                 </div>
-            </div>
         </div>
         <!-- <img width="70px" height="70px" alt="" style=' padding: "4%";' /> -->
         </div>
