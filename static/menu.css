@@ -1,0 +1,52 @@
+body {
+    margin: 0%;
+background: linear-gradient(45deg, rgb(9, 9, 47) 0%, rgb(5, 34, 5) 100%);
+}
+
+[blt="options"] {
+            margin: 8%;
+            margin-right: calc(8% + 300px);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-gap: 20px;
+        }
+
+
+        .item {
+        border: 1px solid black;
+        padding: 10px;
+        margin: 10px;
+        border-radius: 10px;
+        box-shadow: 1px 1px 1px;
+        background-color: rgba(0, 0, 0, 0.383);
+        color: white;
+        .price{
+            background: linear-gradient(90deg, rgb(210, 236, 210) 0%, rgb(118, 156, 118) 100%);
+            background-clip: text;
+            color: transparent;
+        }
+
+        .img{
+            height: 200px;
+
+        }
+
+        img{
+            width: 100%;
+            height: 100%;
+        }
+
+        button{
+            background: linear-gradient(90deg, #00d2ff 0%, #3a47d5 100%);
+            color: white;
+            border: 0;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:active{
+            background: linear-gradient(90deg, #3a47d5 0%, #00d2ff 100%);
+            transform: scale(.98);
+        }
+    }
