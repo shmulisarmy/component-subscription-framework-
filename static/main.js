@@ -59,6 +59,19 @@ function subscribe_component_to_data(template, props) {
 }
 
 
+function sortChildrenElements(main, selector, attr) {
+    const children = Array.from(main.getElementsByClassName('person'));
+
+    children.sort((a, b) => {
+        const aValue = parseInt(a.querySelector(selector)[attr]);
+        const bValue = parseInt(b.querySelector(selector)[attr]);
+        return aValue - bValue;
+    });
+
+    children.forEach(person => main.appendChild(person));
+}
+
+
 
 
 function rerender_nearest_subscribed_element(element) {
@@ -189,7 +202,6 @@ let menu = [
 ];
 
 
-console.log(menu.length)
 
 
 
@@ -216,7 +228,7 @@ function get_family_subscribtion(element_householde_leader, data_householde_lead
         }
     )
 }
-get_family_subscribtion(main, menu, document.getElementById("catagory_template"))
+get_family_subscribtion(main, menu, catagory_template)
 
 
 
