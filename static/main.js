@@ -3,6 +3,7 @@
 function subscribe_component_to_data(template, props) {
     const template_copy = document.importNode(template.content, true);
     props["subscription-key"] = `sk${subscription_keys_used}`
+    subscriptions[props['subscription-key']] = props;
     subscription_keys_used++;
     const key = props["subscription-key"]
     template_copy.children[0].setAttribute('subscription-key', key)
@@ -35,9 +36,6 @@ function subscribe_component_to_data(template, props) {
         });
     })
 
-    if ('subscription-key' in props) {
-        subscriptions[props['subscription-key']] = props;
-        }
     // template_copy.firstElementChild.setAttribute("subscription-key", props['subscription-key']);
     const allblts = template_copy.querySelectorAll("[blt]");
     console.log(allblts)
